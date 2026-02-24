@@ -1,11 +1,27 @@
 #!/usr/bin/env node
 const dotenv = require('dotenv').config()
 const { Command } = require('commander')
-const TMDB_API_KEY = process.env.TMDB_API_KEY;
+// const TMDB_API_KEY = process.env.TMDB_API_KEY;
 const TMDB_RAT = process.env.TMDB_RAT;
 const program = new Command();
 
 console.log('Hi from CLI')
+
+function clean_result(arr){
+    arr.forEach(obj => {
+        // obj = JSON.parse(obj)
+        delete obj['backdrop_path']
+        delete obj['genre_ids']
+        delete obj['id']
+        delete obj['video']
+        delete obj['vote_average']
+        delete obj['vote_count']
+    });
+    
+    
+    console.log(arr)
+    return arr;
+}
 
 program
     .name('Movie-CLI')
@@ -29,7 +45,7 @@ program.command('search')
 
         fetch(url, api_options)
             .then(res => res.json())
-            .then(json => console.log(json))
+            .then(json => {let res = clean_result(json['results']); console.log(res)})
             .catch(err => console.error(err));
     })
 
