@@ -31,10 +31,17 @@ program
 program.command('search')
     .description('Get Movie Details By Name')
     .argument('<title>', 'Title of the movie')
-    .option('-y --year<number>', "release year")
+    .option('-y, --year <number>', "release year")
     .action((title, options) => {
+        let req_year= '';
+        if(options.year){
+            console.log('Filtering For Year',options.year);
+            req_year = options.year;
+
+        }
         console.log('seraching for', title)
-        const url = `https://api.themoviedb.org/3/search/movie?query=${title}&include_adult=false&language=en-US&page=1`;
+        const url = `https://api.themoviedb.org/3/search/movie?query=${title}&include_adult=false&language=en-US&page=1&year=${req_year}`;
+        console.log(url)
         let api_options = {
             method: 'GET',
             headers: {
